@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.2.11"
   s.add_dependency 'haml'
-  s.add_dependency 'formtastic'
+  s.add_dependency 'formtastic', '~> 2.0'
   s.add_dependency 'stringex'
 
   s.add_development_dependency "sqlite3"
