@@ -7,8 +7,9 @@ module Questionable
 
     has_many :answers, :dependent => :destroy
     has_many :answered_options, :through => :answers, :source => :option
+    has_many :comment_assignments, :through => :answers, :source => :assignment
 
-    scope :category, lambda { |category| includes(:question).where("questionable_questions.category #{category.nil? ? 'IS ' : ' = '} ?", category) }
+    scope :category, ->(category) { includes(:question).where("questionable_questions.category #{category.nil? ? 'IS ' : ' = '} ?", category) }
 
     def self.with_subject(subject)
       if subject.kind_of?(Symbol) or subject.kind_of?(String)
@@ -18,6 +19,23 @@ module Questionable
       end
 
       assignments.order(:position)
+    end
+
+    def answered_comments
+      comment_assignments.select('questionable_answers.*, questionable_assignments.*').joins(:answers)
+    end
+
+    def total_chart
+      results = []
+      Questionable::Question.transaction do
+        options = question.options
+        results = options.map { |o| {title: o.title, value: o.value, data: 0, data_type: 'number'} }
+        answered_options.each do |answered_option|
+          index = options.index answered_option
+          results[index][:data] += 1 if index
+        end
+      end
+      results
     end
 
     def answers_for_user(user, rating_id)

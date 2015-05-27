@@ -2,7 +2,7 @@ module Questionable
   class QuestionGroup < ActiveRecord::Base
     belongs_to :group, :polymorphic => true
 
-    has_many :assignments, :as => :subject, :dependent => :destroy, :order => 'position'
+    has_many :assignments, :as => :subject, :dependent => :destroy, :order => "#{Questionable::Assignment.table_name}.position ASC"
 
     accepts_nested_attributes_for :assignments, allow_destroy: true
 

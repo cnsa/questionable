@@ -1,7 +1,7 @@
 module Questionable
   class Question < ActiveRecord::Base
 
-    has_many :options, :order => 'questionable_options.position ASC', :dependent => :destroy
+    has_many :options, :order => "#{Questionable::Option.table_name}.position ASC", :dependent => :destroy
     has_many :assignments
     has_many :subjects, :through => :assignments
     has_many :answers, :through => :assignments
@@ -13,9 +13,7 @@ module Questionable
     #validates_presence_of :title, :unless => :skip_validation
 
     def skip_validation
-      if self.category == 'comment'
-        return true
-      end
+      return true if category == 'comment'
       false
     end
 
