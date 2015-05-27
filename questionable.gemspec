@@ -5,7 +5,7 @@ require "questionable/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "questionable_surveys"
+  s.name        = "questionable"
   s.version     = Questionable::VERSION
   s.authors     = ["Nick Urban"]
   s.email       = ["nick@nickurban.com"]
